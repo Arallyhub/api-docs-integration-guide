@@ -32,8 +32,7 @@ Send a `POST` request to `/audits` with a prompt, two candidate model outputs, a
 
 ### Example Request (`cURL`)
 ```bash
-curl -X POST https://api.eval-pipeline.example.com/v1/audits \
-
+curl -X POST [https://api.eval-pipeline.example.com/v1/audits](https://api.eval-pipeline.example.com/v1/audits) \
   -H "Authorization: Bearer sk_live_98a7f6d5e4c3b2a1" \
   -H "Content-Type: application/json" \
   -d '{
@@ -54,6 +53,10 @@ curl -X POST https://api.eval-pipeline.example.com/v1/audits \
       }
     ]
   }'
+```
+
+### Example Response (`200 OK`)
+```json
 {
   "audit_id": "aud_01J9X7K2M4P8Q",
   "task_id": "zk-rollup-summary-01",
@@ -79,6 +82,8 @@ curl -X POST https://api.eval-pipeline.example.com/v1/audits \
     }
   ]
 }
+```
+
 ---
 
 ## 3. Error Codes & Troubleshooting

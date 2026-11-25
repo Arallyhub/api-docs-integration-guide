@@ -32,7 +32,8 @@ Send a `POST` request to `/audits` with a prompt, two candidate model outputs, a
 
 ### Example Request (`cURL`)
 ```bash
-curl -X POST [https://api.eval-pipeline.example.com/v1/audits](https://api.eval-pipeline.example.com/v1/audits) \
+curl -X POST https://api.eval-pipeline.example.com/v1/audits \
+
   -H "Authorization: Bearer sk_live_98a7f6d5e4c3b2a1" \
   -H "Content-Type: application/json" \
   -d '{
@@ -53,3 +54,38 @@ curl -X POST [https://api.eval-pipeline.example.com/v1/audits](https://api.eval-
       }
     ]
   }'
+{
+  "audit_id": "aud_01J9X7K2M4P8Q",
+  "task_id": "zk-rollup-summary-01",
+  "status": "completed",
+  "winner": "resp_a",
+  "results": [
+    {
+      "id": "resp_a",
+      "score": 5,
+      "constraint_passed": true,
+      "violations": []
+    },
+    {
+      "id": "resp_b",
+      "score": 1,
+      "constraint_passed": false,
+      "violations": [
+        "banned_term_detected: blockchain",
+        "banned_term_detected: gas",
+        "banned_term_detected: decentralized",
+        "bullet_count_mismatch: expected 3, got 0"
+      ]
+    }
+  ]
+}
+---
+
+## 3. Error Codes & Troubleshooting
+
+| HTTP Status | Error Code | Cause | Recommended Resolution |
+| :--- | :--- | :--- | :--- |
+| `400` | `invalid_payload` | Missing required fields or malformed JSON body | Validate schema against Section 2 parameters before retrying |
+| `401` | `unauthorized` | Missing, expired, or invalid Bearer API key | Verify `Authorization` header token and environment scope |
+| `422` | `insufficient_candidates` | Fewer than two candidate responses provided | Supply at least two response objects in `responses[]` |
+| `429` | `rate_limit_exceeded` | Request burst exceeded workspace quota | Implement exponential backoff using the `Retry-After` header |
